@@ -7,7 +7,7 @@ let nums = [];
 let rows;
 let divisor;
 let dato;
-let numsInSection;
+let numsInSection = [];
 let maxNum;
 let divs = [];
 let possibleRows;
@@ -47,7 +47,17 @@ function verificarDatos() {
     if (dato == "") {
       alert("Ingrese un dato valido");
     } else {
-      nums.push(dato);
+//////////////////////////////////
+//////////////////////////////////
+//////////////////////////////////
+//////////////////////////////////
+//////////////////////////////////
+//////////////////////////////////
+//////////////////////////////////
+//////////////////////////////////
+//////////////////////////////////
+      let pusheado = nums.push(dato);
+      console.log(pusheado)
       i++;
     }
   }
@@ -76,29 +86,45 @@ function findDivisor() {
 function setRows() {
   possibleRows = document.querySelectorAll("input");
   let arr = Array.from(possibleRows);
-  arr = arr.filter(item => item.checked == true);
-  if(arr[0] == undefined){
-    alert("Seleccione una opción")
-  } else{
-    divisor = maxNum / arr[0].value
-    showTable()
+  arr = arr.filter((item) => item.checked == true);
+  if (arr[0] == undefined) {
+    alert("Seleccione una opción");
+  } else {
+    divisor = maxNum / arr[0].value;
+    showTable();
   }
 }
 
-function showTable(){
-  nav.innerHTML = `<table class="table table-bordered">` +
-  `<thead>` + 
-  `<tr>` + 
-  `<th>Dato</th>` + 
-  `<th>Frecuencia Absoluta</th>` + 
-  `<th>Frecuencia Acumulada</th>` + 
-  `<th>Frecuencia Relativa</th>` + 
-  `<th>Frecuencia Relativa Acumulada</th>` + 
-  `<th>Dato</th>` +
-  `</tr>` + 
-  `</thead>` + 
-  `<tbody>` + 
-  `</tbody>` + 
-  `</table>`;
-  alert("eto e boca amigo")
+function showTable() {
+  nav.innerHTML =
+    `<table class="table table-bordered">` +
+    `<thead>` +
+    `<tr>` +
+    `<th>Dato</th>` +
+    `<th>Frec. Absoluta</th>` +
+    `<th>Frec. Acumulada</th>` +
+    `<th>Frec. Relativa</th>` +
+    `<th>Frec. Relativa Acumulada</th>` +
+    `</tr>` +
+    `</thead>` +
+    `<tbody>` +
+    `</tbody>` +
+    `</table>`;
+
+  let content = document.querySelector("tbody");
+  let acum;
+  for (let i = 0, j = 0; i < maxNum; i += divisor, j++) {
+    content.innerHTML += `<tr>` + `<th>[${i} - ${i + divisor})</th>`;
+    numsInSection.push(nums.filter(
+      num => num >= i && num < (i + divisor)
+    ).length);
+    console.log(numsInSection);
+    acum += numsInSection[j];
+    content.innerHTML +=
+      `<td>${numsInSection[j]}</td>` +
+      `<td>${acum}</td>` +
+      `<td>${numsInSection[j] / cantNums}</td>` +
+      `<td>${acum / cantNums}</td>` +
+      `</tr>`;
+  }
 }
