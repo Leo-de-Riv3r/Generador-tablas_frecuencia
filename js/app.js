@@ -7,10 +7,11 @@ let nums = [];
 let rows;
 let divisor;
 let dato;
-let numsInSection = [];
+let numsInSection;
 let maxNum;
 let divs = [];
 let possibleRows;
+let acum = 0;
 
 function verificarTipoDato() {
   let cualitativo = document.querySelector("#cualitativo").checked;
@@ -42,24 +43,16 @@ let i = 0;
 function verificarDatos() {
   i = 0;
   while (i < cantNums) {
-    dato = prompt(`Ingrese dato numero ${i + 1}`);
+    dato = prompt(`Ingrese dato numero ${i}`);
 
-    if (dato == "") {
+    if (dato == "" || dato === null) {
       alert("Ingrese un dato valido");
     } else {
-//////////////////////////////////
-//////////////////////////////////
-//////////////////////////////////
-//////////////////////////////////
-//////////////////////////////////
-//////////////////////////////////
-//////////////////////////////////
-//////////////////////////////////
-//////////////////////////////////
-      let pusheado = nums.push(dato);
-      console.log(pusheado)
+      nums.push(dato);
+      console.log(dato);
       i++;
     }
+    console.log(nums);
   }
   findDivisor();
 }
@@ -107,24 +100,34 @@ function showTable() {
     `<th>Frec. Relativa Acumulada</th>` +
     `</tr>` +
     `</thead>` +
-    `<tbody>` +
-    `</tbody>` +
     `</table>`;
 
-  let content = document.querySelector("tbody");
-  let acum;
+  let content = document.querySelector("table");
+  content.innerHTML += `<tbody>`
   for (let i = 0, j = 0; i < maxNum; i += divisor, j++) {
-    content.innerHTML += `<tr>` + `<th>[${i} - ${i + divisor})</th>`;
-    numsInSection.push(nums.filter(
-      num => num >= i && num < (i + divisor)
-    ).length);
+    if (i + divisor == maxNum) {
+      content.innerHTML += `<tr><th>[${i} - ${i + divisor}]</th>`;
+      numsInSection = nums.filter(
+        (num) => num >= i && num <= i + divisor
+      ).length;
+      console.log("last row");
+    } else {
+      content.innerHTML += `<tr><th>[${i} - ${i + divisor})</th>`;
+      numsInSection = nums.filter(
+        (num) => num >= i && num < i + divisor
+      ).length;
+      console.log("not last row");
+    }
+
     console.log(numsInSection);
-    acum += numsInSection[j];
+    acum = acum + numsInSection;
+    console.log(acum);
     content.innerHTML +=
-      `<td>${numsInSection[j]}</td>` +
+      `<td>${numsInSection}</td>` +
       `<td>${acum}</td>` +
-      `<td>${numsInSection[j] / cantNums}</td>` +
+      `<td>${numsInSection / cantNums}</td>` +
       `<td>${acum / cantNums}</td>` +
       `</tr>`;
   }
+  content.innerHTML += `</tbody>`
 }
